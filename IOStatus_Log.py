@@ -1,8 +1,6 @@
 import os.path
 import sys
 lastmodified = ""
-def CheckIfFileExists(path):
-    return os.path.isfile(path)
 def WriteTxtFile(newprocess , oldprocess , ExpectedDate , path):
     if lastmodified == "" or os.stat(path+"/Status_Log.txt").st_mtime == lastmodified:
         with open(path+"/Status_Log.txt", 'a') as outtxt:
