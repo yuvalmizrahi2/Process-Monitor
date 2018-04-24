@@ -13,9 +13,10 @@ if platform.system() is "Windows":
         CloseFolder()
         time.sleep(60 * X)
 else:
-    MakeFolderLinux(path)
-    WriteCsvFile(path + "/ProcessMonitor")
-    time.sleep(60 * X)
+    while 1:
+        MakeFolderLinux(path)
+        WriteCsvFile(path + "/ProcessMonitor")
+        time.sleep(60 * X)
 
 
 
