@@ -2,27 +2,21 @@ import os.path
 import csv
 import datetime
 from Process import Process
-from ProcessScanner import ListOfProcess
-from IOStatus_Log import WriteTxtFile
+import ProcessScanner
+import IOStatus_Log
 import sys
 lastmodified = ""
 def CheckIfFileExists(path):
     return os.path.isfile(path)
 
 def WriteCsvFile(path):
-    list = ListOfProcess()
+    list = ProcessScanner.ListOfProcess()
     ExpectedDate = datetime.datetime.now().strftime("%y-%m-%d %H-%M")
-    if CheckIfFileExists(path+"/processList.csv") and (lastmodified == "" or os.stat(path+"/processList.csv").st_mtime == lastmodified):
+    if lastmodified == "" or os.stat(path+"/processList.csv").st_mtime == lastmodified:
         lastprocess = ReadLastScanner(path+"/processList.csv")
-        WriteTxtFile(list , lastprocess , ExpectedDate , path)
+        IOStatus_Log.WriteTxtFile(list , lastprocess , ExpectedDate , path)
         with open(path+"/processList.csv", 'ab') as outcsv:
             writer = csv.writer(outcsv, delimiter=',')
-            for proc in list:
-                writer.writerow([proc.pid, proc.name, ExpectedDate])
-    elif lastmodified == "" or os.stat(path).st_mtime == lastmodified:
-        with open(path+"/processList.csv", 'wb') as outcsv:
-            writer = csv.writer(outcsv, delimiter=',')
-            writer.writerow(["PID", "NAME", "DATE"])
             for proc in list:
                 writer.writerow([proc.pid, proc.name, ExpectedDate])
     else:
