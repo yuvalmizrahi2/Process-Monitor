@@ -5,23 +5,22 @@ from Process import Process
 from ProcessScanner import ListOfProcess
 from IOStatus_Log import WriteTxtFile
 import sys
-path = "C:/ProcessMonitor/processList.csv"
 lastmodified = ""
-def CheckIfFileExists():
+def CheckIfFileExists(path):
     return os.path.isfile(path)
 
-def WriteCsvFile():
+def WriteCsvFile(path):
     list = ListOfProcess()
     ExpectedDate = datetime.datetime.now().strftime("%y-%m-%d %H-%M")
-    if CheckIfFileExists() and (lastmodified == "" or os.stat(path).st_mtime == lastmodified):
-        lastprocess = ReadLastScanner()
-        WriteTxtFile(list , lastprocess , ExpectedDate)
-        with open(path, 'ab') as outcsv:
+    if CheckIfFileExists(path+"/processList.csv") and (lastmodified == "" or os.stat(path+"/processList.csv").st_mtime == lastmodified):
+        lastprocess = ReadLastScanner(path+"/processList.csv")
+        WriteTxtFile(list , lastprocess , ExpectedDate , path)
+        with open(path+"/processList.csv", 'ab') as outcsv:
             writer = csv.writer(outcsv, delimiter=',')
             for proc in list:
                 writer.writerow([proc.pid, proc.name, ExpectedDate])
     elif lastmodified == "" or os.stat(path).st_mtime == lastmodified:
-        with open(path, 'wb') as outcsv:
+        with open(path+"/processList.csv", 'wb') as outcsv:
             writer = csv.writer(outcsv, delimiter=',')
             writer.writerow(["PID", "NAME", "DATE"])
             for proc in list:
@@ -30,7 +29,7 @@ def WriteCsvFile():
         print "there was change in processList file"
         sys.exit(1)
 
-def ReadLastScanner():
+def ReadLastScanner(path):
     process = []
     date = ""
     with open(path, 'rb') as f:

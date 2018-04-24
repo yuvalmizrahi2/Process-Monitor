@@ -1,13 +1,23 @@
 import time
-from FolderLock import OpenFolder,CloseFolder,MakeFolder
+from FolderLock import OpenFolder,CloseFolder,MakeFolderWindows,MakeFolderLinux
 from IOprocessList import WriteCsvFile
-MakeFolder()
-X = input("enter the amount of time that the monitor need to scan the process: ")
-while 1:
-    OpenFolder()
-    WriteCsvFile()
-    CloseFolder()
+import platform
+
+X = input("Enter the amount of time to scan: ")
+path = raw_input("Enter the path to which files are created: ")
+if platform.system() is "Windows":
+    MakeFolderWindows(path)
+    while 1:
+        OpenFolder()
+        WriteCsvFile(path+"/ProcessMonitor")
+        CloseFolder()
+        time.sleep(60 * X)
+else:
+    MakeFolderLinux(path)
+    WriteCsvFile(path + "/ProcessMonitor")
     time.sleep(60 * X)
+
+
 
 
 
