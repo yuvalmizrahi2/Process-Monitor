@@ -1,9 +1,9 @@
 import os.path
 import sys
 lastmodified = ""
-def WriteTxtFile(newprocess , oldprocess , ExpectedDate , path):
-    if lastmodified == "" or os.stat(path+"/Status_Log.txt").st_mtime == lastmodified:
-        with open(path+"/Status_Log.txt", 'a') as outtxt:
+def WriteTxtFile(newprocess , oldprocess , ExpectedDate):
+    if lastmodified == "" or os.stat("ProcessMonitor/Status_Log.txt").st_mtime == lastmodified:
+        with open("ProcessMonitor/Status_Log.txt", 'a') as outtxt:
             outtxt.write("the date of the change is {0}\n\n".format(ExpectedDate))
             for proc in newprocess:
                 if proc not in oldprocess:
