@@ -17,5 +17,5 @@ def RunMonitorState():
         FolderLock.MakeFolderLinux()
         while 1:
             FolderLock.CheckIfFolderDeleted("ProcessMonitor")
-            IOprocessList.WriteCsvFile("ProcessMonitor")
+            IOprocessList.WriteCsvFile()
             time.sleep(60 * x)
