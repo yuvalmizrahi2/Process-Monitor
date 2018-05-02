@@ -3,6 +3,7 @@ import FolderLock
 import IOprocessList
 import platform
 import InputCheck
+import MainFrame
 def RunMonitorState():
     x = InputCheck.EnterTime()
     if platform.system() is "Windows":
@@ -12,10 +13,18 @@ def RunMonitorState():
             FolderLock.OpenFolder()
             IOprocessList.WriteCsvFile()
             FolderLock.CloseFolder()
-            time.sleep(60 * x)
+            try:
+                print "If you want to go back to the menu press CTRL + C"
+                time.sleep(x*60)
+            except KeyboardInterrupt:
+                MainFrame.RunMainMenu()
     else:
         FolderLock.MakeFolderLinux()
         while 1:
             FolderLock.CheckIfFolderDeleted("ProcessMonitor")
             IOprocessList.WriteCsvFile()
-            time.sleep(60 * x)
+            try:
+                print "If you want to go back to the menu press CTRL + C"
+                time.sleep(x*60)
+            except KeyboardInterrupt:
+                MainFrame.RunMainMenu()
