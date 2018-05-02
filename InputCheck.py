@@ -1,6 +1,8 @@
 import os
 import re
 import IOprocessList
+import platform
+import FolderLock
 def EnterTime():
     while 1:
         try:
@@ -41,3 +43,34 @@ def EnterChoose():
         except ValueError:
             print "wrong input enter again"
             continue
+def CheckFiles():
+    if platform.system() is "Windows":
+        if os.path.exists("ProcessMonitor.{645ff040-5081-101b-9f08-00aa002f954e}"):
+            FolderLock.OpenFolder()
+            if os.stat("ProcessMonitor/processList.csv").st_size != 0:
+                return CheckDataInFile()
+            else:
+                FolderLock.CloseFolder()
+        return False
+    else:
+        if os.path.exists("ProcessMonitor"):
+            if os.stat("ProcessMonitor/processList.csv").st_size != 0:
+                return CheckDataInFile()
+        return False
+
+def CheckDataInFile():
+    counter = 0
+    with open("ProcessMonitor/processList.csv", 'rb') as f:
+        reader = csv.reader(f)
+        for line in reader:
+            if counter == 0:
+                date = line[2]
+                counter = counter + 1
+            else:
+                if date != line[2]:
+                    counter = counter + 1
+                if counter == 2:
+                    FolderLock.CloseFolder()
+                    return True
+    FolderLock.CloseFolder()
+    return False
